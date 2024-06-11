@@ -1,0 +1,24 @@
+body{
+  min-height: 100vh;
+
+  #root{
+    min-height: 100vh;
+
+    header{
+      min-height: 10vh;
+    }
+
+    main{
+      min-height: 88vh;
+    }
+
+    footer{
+      min-height: 2vh;
+    }
+  }
+}
+
+$blue-theme: #2A3F74;
+$lightblue-theme: #5577D1;
+$red-theme: #E06C43;
+$white-theme: #F6F3EC;

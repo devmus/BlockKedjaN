@@ -8,11 +8,20 @@ header{
     padding: 1rem;
     justify-content: space-between;
     align-items: center;
-    background-color: #5577D1;
-    color: #F6F3EC;
+    background-color: $lightblue-theme;
+    color: $white-theme;
 
     .logo-wrapper{
       font-size: xx-large;
+
+      h1{
+        cursor: pointer;
+
+        &:hover{
+          color: $red-theme;
+          text-shadow: 1px 1px 1px black;
+        }
+      }
     }
 
     .user-wrapper{
@@ -25,8 +34,8 @@ header{
 }
 
 .navbar{
-  background-color: #2A3F74;
-  color: #F6F3EC;
+  background-color:$blue-theme;
+  color: $white-theme;
   font-size: x-large;
   padding: 2px;
   
@@ -39,12 +48,12 @@ header{
     li{
       cursor: pointer;
 
-      &:active{
-        color: #E06C43;
+      &:hover{
+        color: $red-theme;
       }
     }
     .active{
-      color:#E06C43;
+      color: $red-theme;
     }
   }
 }
