@@ -4,7 +4,18 @@ footer{
   bottom: 0;
   width: 100%;
   background-color: $blue-theme;
-  color: $white-theme;
-  font-size: medium;
-  padding: 2px;
+  font-size: x-large;
+  padding: 1rem;
+  justify-content: space-between;
+
+  .admin-link{
+
+    &:hover{
+      @include hover-link;
+    }
+
+    .active{
+      color: $red-theme;
+    }
+  }
 }

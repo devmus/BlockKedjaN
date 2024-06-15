@@ -5,6 +5,7 @@ import { Layout } from "./Pages/Layout";
 import { Mine } from "./Pages/Mine";
 import { NotFound } from "./Pages/NotFound";
 import { Transact } from "./Pages/Transact";
+import { Admin } from "./Pages/Admin";
 
 export const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ export const router = createBrowserRouter([
       {
         path: "/blockkedjan/explorer",
         element: <Explorer />
+      },
+      {
+        path: "/blockkedjan/admin",
+        element: <Admin />
       }]
     },
   ]);

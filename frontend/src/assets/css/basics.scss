@@ -1,5 +1,36 @@
+$blue-theme: #2A3F74;
+$lightblue-theme: #5577D1;
+$red-theme: #E06C43;
+$white-theme: #F6F3EC;
+
+$hover-link: (
+  cursor: pointer,
+  color: $red-theme,
+  text-shadow: 1px 1px 1px black,
+  border: 3px solid $white-theme,
+  background: $lightblue-theme,
+);
+
+@mixin hover-link {
+  cursor: map-get($hover-link, cursor);
+  color: map-get($hover-link, color);
+}
+
+@mixin hover-link-h1 {
+  cursor: map-get($hover-link, cursor);
+  color: map-get($hover-link, color);
+  text-shadow: map-get($hover-link, text-shadow);
+}
+
+@mixin hover-link-button {
+  cursor: map-get($hover-link, cursor);
+  color: map-get($hover-link, color);
+  border: map-get($hover-link, border);
+}
+
 body{
   min-height: 100vh;
+  color: $white-theme;
 
   #root{
     min-height: 100vh;
@@ -9,16 +40,13 @@ body{
     }
 
     main{
-      min-height: 88vh;
+      min-height: 87vh;
+      color: black
     }
 
     footer{
-      min-height: 2vh;
+      min-height: 3vh;
     }
   }
 }
 
-$blue-theme: #2A3F74;
-$lightblue-theme: #5577D1;
-$red-theme: #E06C43;
-$white-theme: #F6F3EC;
