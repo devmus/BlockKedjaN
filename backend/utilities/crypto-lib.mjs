@@ -1,9 +1,9 @@
 import crypto from 'crypto';
 // import pkg from 'elliptic';
 
-export const createHash = (stringToHash) => {
-  return crypto.createHash('sha256').update(stringToHash).digest('hex');
-  // return crypto.createHash('sha256').update(args.sort().join('')).digest('hex');
+export const createHash = (...args) => {
+  // return crypto.createHash('sha256').update(args.join('')).digest('hex');
+  return crypto.createHash('sha256').update(args.sort().join('')).digest('hex');
 };
 
 // const { ec } = pkg;

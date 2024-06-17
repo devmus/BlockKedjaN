@@ -20,7 +20,7 @@ export default class Block {
     return new this(GENESIS_DATA);
   }
 
-  static mineBlock(lastBlock, data) {
+  static mineBlock({ lastBlock, data }) {
     let timestamp, hash;
     let nonce = 512;
     let lastHash = lastBlock.hash;

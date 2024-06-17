@@ -19,6 +19,11 @@ JWT_COOKIE_TTL=90
 
 MONGO_URI=
 
+## Tests
+
+- Terminal:
+  ./backend $npm run test
+
 ## Instruktioner för inlämning:
 
 I denna sista inlämningsuppgift ska ni skapa en fullständig blockkedja för en egen kryptovaluta med transaktionshantering och validering av transaktionerna.

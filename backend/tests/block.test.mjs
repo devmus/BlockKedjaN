@@ -3,6 +3,7 @@ import { GENESIS_DATA } from '../utilities/settings.mjs';
 import dontenv from 'dotenv';
 import Block from '../models/Block.mjs';
 import Blockchain from '../models/Blockchain.mjs';
+import { createHash } from '../utilities/crypto-lib.mjs';
 
 dontenv.config({ path: './config/config.env' });
 
@@ -10,8 +11,8 @@ describe('Block', () => {
   const timestamp = Date.now();
   const hash = 'current-hash';
   const lastHash = 'previous-hash';
-  const data = 'Transaction';
-  const nonce = 1;
+  const data = { amount: 4, sender: 'Rasmus', recipient: 'Som' };
+  const nonce = 512;
   const difficulty = parseInt(process.env.DIFFICULTY);
   const mineRate = parseInt(process.env.MINE_RATE);
 
@@ -49,6 +50,9 @@ describe('Block', () => {
     it('should set a timestamp', () => {
       expect(block.timestamp).not.toEqual(undefined);
     });
+    it('should set a timestamp', () => {
+      expect(block.timestamp).toEqual(timestamp);
+    });
     it('should have data', () => {
       expect(block.data).toEqual(data);
     });
@@ -83,6 +87,38 @@ describe('Block', () => {
       });
     });
 
+    describe('mineBlock() function', () => {
+      let lastBlock, data, minedBlock;
+
+      beforeEach(() => {
+        lastBlock = Block.createGenesis();
+        data = { message: 'Transaction A' };
+        minedBlock = Block.mineBlock({ lastBlock, data });
+      });
+
+      it('should return a new intance of Block class', () => {
+        expect(minedBlock instanceof Block).toBe(true);
+      });
+
+      it('should add a timestamp', () => {
+        expect(minedBlock.timestamp).not.toBeUndefined();
+      });
+
+      it('should set the lastHash to match the lastBlock hash.', () => {
+        expect(minedBlock.lastHash).toEqual(lastBlock.hash);
+      });
+
+      it('should set the data', () => {
+        expect(minedBlock.data).toEqual(data);
+      });
+
+      it('should produce a hash based on correct input', () => {
+        // expect(minedBlock.hash).toEqual(
+        //   createHash(minedBlock.timestamp, minedBlock.lastHash, data)
+        // );
+      });
+    });
+
     describe('changeDifficultyLevel() function', () => {
       it('should raise the difficulty level for quickly mined block', () => {
         expect(
@@ -94,16 +130,6 @@ describe('Block', () => {
         expect(
           Block.adjustDifficultyLevel(block, block.timestamp + mineRate + 100)
         ).toEqual(block.difficulty - 1);
-      });
-    });
-
-    describe('mineBlock() function', () => {
-      const lastBlock = Block.createGenesis();
-      const data = 'Transaction A';
-      const minedBlock = Block.mineBlock(lastBlock, data);
-
-      it('should return a new intance of Block class', () => {
-        expect(minedBlock instanceof Block).toBe(true);
       });
     });
   });

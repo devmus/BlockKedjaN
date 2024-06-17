@@ -9,7 +9,7 @@ export default class Blockchain {
   }
 
   createBlock({ data }) {
-    const block = Block.mineBlock(this.chain.at(-1), data);
+    const block = Block.mineBlock({ lastBlock: this.chain.at(-1), data });
     this.chain.push(block);
     return block;
   }

@@ -38,8 +38,9 @@ describe('Blockchain', () => {
     describe('validateChain() function', () => {
       describe('The genesis block is missing or not the first block in the chain', () => {
         it('should return false', () => {
-          blockchain_1.chain[0] = 'CORRUPT';
-          expect(Blockchain.isValid(blockchain_1.chain)).toBeFalsy;
+          blockchain_1.chain[0] = { data: 'CORRUPT' };
+
+          expect(Blockchain.isValid(blockchain_1.chain)).toBe(false);
         });
       });
 
@@ -55,14 +56,21 @@ describe('Blockchain', () => {
           it('should return false', () => {
             blockchain_1.chain[1].lastHash = 'CORRUPT';
 
-            expect(Blockchain.isValid(blockchain_1.chain)).toBeFalsy;
+            expect(Blockchain.isValid(blockchain_1.chain)).toBe(false);
           });
         });
 
         describe('and the chain contains a block with invalid information/data', () => {
           it('should return false', () => {
-            blockchain_1.chain.at(1).data = 'CORRUPT';
-            expect(Blockchain.isValid(blockchain_1.chain)).toBeFalsy;
+            blockchain_1.chain[2].data = 'CORRUPT';
+
+            expect(Blockchain.isValid(blockchain_1.chain)).toBe(false);
+          });
+        });
+
+        describe('and the chain is valid', () => {
+          it('should return true', () => {
+            expect(Blockchain.isValid(blockchain_1.chain)).toBe(true);
           });
         });
       });
@@ -96,12 +104,9 @@ describe('Blockchain', () => {
         });
 
         describe('and when it is valid', () => {
-          beforeEach(() => {
-            blockchain_1.replaceChain(blockchain_2.chain);
-          });
-
           it('should replace the chain', () => {
-            expect(blockchain_1.chain).toEqual(blockchain_2.chain);
+            blockchain_1.replaceChain(blockchain_2.chain);
+            expect(blockchain_1.chain).toBe(blockchain_2.chain);
           });
         });
       });
