@@ -1,12 +1,12 @@
 import crypto from 'crypto';
-// import pkg from 'elliptic';
+import pkg from 'elliptic';
 
 export const createHash = (...args) => {
   // return crypto.createHash('sha256').update(args.join('')).digest('hex');
   return crypto.createHash('sha256').update(args.sort().join('')).digest('hex');
 };
 
-// const { ec } = pkg;
+const { ec } = pkg;
 
 // export const createHash = (...args) => {
 //   return crypto
@@ -21,9 +21,9 @@ export const createHash = (...args) => {
 //   // return crypto.createHash('sha256').update(args.sort().join('')).digest('hex');
 // };
 
-// export const ellipticHash = new ec('secp256k1');
+export const ellipticHash = new ec('secp256k1');
 
-// export const verifySignature = ({ publicKey, data, signature }) => {
-//   const key = ellipticHash.keyFromPublic(publicKey, 'hex');
-//   return key.verify(createHash(data), signature);
-// };
+export const verifySignature = ({ publicKey, data, signature }) => {
+  const key = ellipticHash.keyFromPublic(publicKey, 'hex');
+  return key.verify(createHash(data), signature);
+};

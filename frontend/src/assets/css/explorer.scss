@@ -1,0 +1,45 @@
+.explorer-wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  h2{
+    text-align: center;
+    font-size: x-large;
+    margin: 15px;
+  }
+
+
+  .show-blocks {
+    width: 90%;
+    display: flex;
+    flex-direction: column-reverse;
+    margin-bottom: 50px;
+  }
+
+
+  .connector{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .block{
+    overflow: auto;
+    padding: 5px;
+    border: 5px solid $blue-theme;
+    border-radius: 15px;
+    background-color: $lightblue-theme;
+    word-wrap: break-word;
+
+    div{
+      margin: 3px;
+      color: $white-theme;
+      font-size: large;
+      display: flex;
+      flex-wrap:nowrap;
+    }
+  }
+}

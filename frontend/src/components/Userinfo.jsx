@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { getMe, update, updatePassword } from '../services/auth'
+import { copyToClipboard, shortenKey } from '../services/misc'
 
 export const UserInfo = ({setShowUserProfile, userInfo, setUserInfo, handleLogout}) => {
 
@@ -76,6 +77,8 @@ export const UserInfo = ({setShowUserProfile, userInfo, setUserInfo, handleLogou
     setEditPassword(true);
   }
 
+  
+
 
   return (
 <div className="userinfo-wrapper">
@@ -89,19 +92,10 @@ export const UserInfo = ({setShowUserProfile, userInfo, setUserInfo, handleLogou
       <div>E-mail: {userInfo.email}</div>
       <div>First Name: {userInfo.fname}</div>
       <div>Last Name: {userInfo.lname}</div>
-      </div>
+      <div className="publickey-display" onClick={() => copyToClipboard(userInfo.publicKey)}> Public Key: {shortenKey(userInfo.publicKey)}</div>
+    </div>
     }
   </div>
-  {!editPassword && !editInfo &&
-  <div className="userinfo-button-wrapper">
-    <div className="button-control">
-      <button className="application-button" onClick={handleEditInfo}>Edit user info</button>
-    </div>
-    <div className="button-control">
-      <button className="application-button" onClick={handleEditPassword}>Change password</button>
-    </div>
-  </div>
-  }
   {editInfo &&
   <form onSubmit={handleSubmitInfo}>
         <h3>Edit info</h3>
@@ -148,11 +142,23 @@ export const UserInfo = ({setShowUserProfile, userInfo, setUserInfo, handleLogou
     </div>
   </form>
   }
+  <section className="userinfo-buttons-wrapper">
+  {!editPassword && !editInfo &&
+  <div className="userinfo-button-wrapper">
+    <div className="button-control">
+      <button className="application-button" onClick={handleEditInfo}>Edit user info</button>
+    </div>
+    <div className="button-control">
+      <button className="application-button" onClick={handleEditPassword}>Change password</button>
+    </div>
+  </div>
+  }
   <div className="button-wrapper">
     <div className="button-control">
       <button className="application-button" onClick={handleLogout}>Log out</button>
     </div>
   </div>
+</section>
 </div>
 </div>
 

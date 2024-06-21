@@ -32,10 +32,13 @@ export default class Blockchain {
         chain.at(i);
 
       const prevHash = chain[i - 1].hash;
+      const prevDifficulty = chain[i - 1].difficulty;
 
       if (lastHash !== prevHash) {
         return false;
       }
+
+      if (Math.abs(prevDifficulty - difficulty) > 1) return false;
 
       const stringToHash = timestamp
         .toString()

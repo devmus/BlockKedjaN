@@ -11,6 +11,7 @@ export const Header = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [showUserProfile, setShowUserProfile] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
+  const [updateHeader, setUpdateHeader] = useState(false)
 
   useEffect(() => {
   const storedLoginInfo = localStorage.getItem('loginInfo');
@@ -18,12 +19,13 @@ export const Header = () => {
       if (storedLoginInfo && storedLoginInfo !== "undefined") {
       const userInfo = await getMe(storedLoginInfo)
       setUserInfo(userInfo)
+      console.log("useeffect");
     }
     return;
   }
 
   getUserInfo();
-  }, [])
+  }, [updateHeader])
 
   const handleClickLogin = () => {
     setShowLogin(true)
@@ -39,7 +41,7 @@ export const Header = () => {
     setShowUserProfile(false)
   }
 
-
+  console.log("header", updateHeader);
 
   return (
     <header>
@@ -57,7 +59,7 @@ export const Header = () => {
       </section>
       <Navbar />
       {showLogin &&
-        <Login setShowLogin={setShowLogin} setUserInfo={setUserInfo}/>
+        <Login setShowLogin={setShowLogin} setUserInfo={setUserInfo} setUpdateHeader={setUpdateHeader} updateHeader={updateHeader}/>
       }
       {showUserProfile && 
         <UserInfo setShowUserProfile={setShowUserProfile} userInfo={userInfo} setUserInfo={setUserInfo} handleLogout={handleLogout}/>

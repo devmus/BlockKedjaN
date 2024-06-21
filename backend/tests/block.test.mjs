@@ -113,9 +113,16 @@ describe('Block', () => {
       });
 
       it('should produce a hash based on correct input', () => {
-        // expect(minedBlock.hash).toEqual(
-        //   createHash(minedBlock.timestamp, minedBlock.lastHash, data)
-        // );
+        const stringToHash = minedBlock.timestamp
+          .toString()
+          .concat(
+            minedBlock.lastHash,
+            JSON.stringify(minedBlock.data),
+            minedBlock.nonce,
+            minedBlock.difficulty
+          );
+
+        expect(minedBlock.hash).toEqual(createHash(stringToHash));
       });
     });
 

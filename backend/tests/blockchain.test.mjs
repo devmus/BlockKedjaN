@@ -1,6 +1,7 @@
 import { describe, it, beforeEach, expect } from 'vitest';
 import Blockchain from '../models/Blockchain.mjs';
 import Block from '../models/Block.mjs';
+import { createHash } from '../utilities/crypto-lib.mjs';
 
 describe('Blockchain', () => {
   let blockchain_1, blockchain_2, originalChain;
@@ -63,6 +64,32 @@ describe('Blockchain', () => {
         describe('and the chain contains a block with invalid information/data', () => {
           it('should return false', () => {
             blockchain_1.chain[2].data = 'CORRUPT';
+
+            expect(Blockchain.isValid(blockchain_1.chain)).toBe(false);
+          });
+        });
+
+        describe('and the chain contains a block with a jumped difficulty jump', () => {
+          it('should return false', () => {
+            const lastBlock = blockchain_1.chain.at(-1);
+            const lastHash = lastBlock.hash;
+            const timestamp = Date.now();
+            const nonce = 0;
+            const data = [];
+            const difficulty = lastBlock.difficulty - 4;
+            const stringToHash = timestamp
+              .toString()
+              .concat(lastHash, JSON.stringify(data), nonce, difficulty);
+            const hash = createHash(stringToHash);
+            const block = new Block({
+              timestamp,
+              lastHash,
+              hash,
+              nonce,
+              difficulty,
+              data,
+            });
+            blockchain_1.chain.push(block);
 
             expect(Blockchain.isValid(blockchain_1.chain)).toBe(false);
           });

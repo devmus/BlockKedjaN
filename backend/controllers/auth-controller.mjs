@@ -1,6 +1,7 @@
 import User from '../models/UserModel.mjs';
 import ErrorResponse from '../models/ErrorResponseModel.mjs';
 import { asyncHandler } from '../middleware/asyncHandler.mjs';
+import Wallet from '../models/Wallet.mjs';
 
 // @desc    Registrera en användare
 // @route   POST /api/v1/auth/register
@@ -8,7 +9,16 @@ import { asyncHandler } from '../middleware/asyncHandler.mjs';
 export const register = asyncHandler(async (req, res, next) => {
   const { fname, lname, email, password, role } = req.body;
 
-  const user = await User.create({ fname, lname, email, password, role });
+  const { publicKey } = new Wallet();
+
+  const user = await User.create({
+    fname,
+    lname,
+    email,
+    password,
+    role,
+    publicKey,
+  });
 
   createAndSendToken(user, 201, res);
 });
@@ -24,7 +34,7 @@ export const login = asyncHandler(async (req, res, next) => {
   }
 
   //mongoose fråga
-  // Vi måste hämta in anvä'ndaren baserat på dess e-post
+  // Vi måste hämta in användaren baserat på dess e-post
 
   const user = await User.findOne({ email }).select('+password');
 

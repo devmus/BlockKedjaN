@@ -1,3 +1,4 @@
+import hexToBinary from 'hex-to-binary';
 import { createHash } from '../utilities/crypto-lib.mjs';
 import { GENESIS_DATA } from '../utilities/settings.mjs';
 import dontenv from 'dotenv';
@@ -35,7 +36,9 @@ export default class Block {
         .concat(lastHash, JSON.stringify(data), nonce, difficulty);
 
       hash = createHash(stringToHash);
-    } while (hash.substring(0, difficulty) !== '0'.repeat(difficulty));
+    } while (
+      hexToBinary(hash).substring(0, difficulty) !== '0'.repeat(difficulty)
+    );
 
     return new this({ timestamp, hash, lastHash, data, nonce, difficulty });
   }

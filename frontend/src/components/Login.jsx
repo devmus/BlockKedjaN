@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import axios from "axios";
 import { getMe, login, register } from '../services/auth';
 
-export const Login = ({setShowLogin, setUserInfo}) => {
+export const Login = ({setShowLogin, setUserInfo, setUpdateHeader, updateHeader}) => {
 
   const [loginInfo, setLoginInfo] = useState({})
   const [signupInfo, setSignupInfo] = useState({})
@@ -27,6 +27,7 @@ export const Login = ({setShowLogin, setUserInfo}) => {
         if(response.statusCode = 200) {
         localStorage.setItem("loginInfo", response.token)
         setUserInfo(signupInfo.fname)
+        setUpdateHeader(prevState => !prevState)
         } else {
           alert(`${response.error}`)
           return;
@@ -42,6 +43,7 @@ export const Login = ({setShowLogin, setUserInfo}) => {
         localStorage.setItem("loginInfo", response.token)
         const userInfo = await getMe(response.token)
         setUserInfo(userInfo)
+        setUpdateHeader(prevState => !prevState)
         } else {
           alert(`${response.error}`)
           return;
