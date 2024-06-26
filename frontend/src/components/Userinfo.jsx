@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { getMe, update, updatePassword } from '../services/auth'
-import { copyToClipboard, shortenKey } from '../services/misc'
+import { copyToClipboard, getToken, shortenKey } from '../services/misc'
+import { Popup } from './Popup'
 
 export const UserInfo = ({setShowUserProfile, userInfo, setUserInfo, handleLogout}) => {
 
@@ -8,6 +9,7 @@ export const UserInfo = ({setShowUserProfile, userInfo, setUserInfo, handleLogou
   const [editPassword, setEditPassword] = useState(false)
   const [userInfoChange, setUserInfoChange] = useState({email: userInfo.email, fname: userInfo.fname, lname: userInfo.lname})
   const [userPasswordChange, setUserPasswordChange] = useState(false)
+  const [displayPopup, setDisplayPopup] = useState("")
 
   const handleChangeInfo = (e) => {
     const {name, value} = e.target;
@@ -19,50 +21,44 @@ export const UserInfo = ({setShowUserProfile, userInfo, setUserInfo, handleLogou
     setUserPasswordChange(prev => ({...prev, [name]: value}))
   }
 
-
   const handleSubmitInfo = async (e) => {
-    //changeinfo
     e.preventDefault();
-    const storedLoginInfo = localStorage.getItem('loginInfo');
+    const token = getToken();
 
     const compareA = userInfo.email + userInfo.fname + userInfo.lname
     const compareB = userInfoChange.email + userInfoChange.fname + userInfoChange.lname
 
     if(compareA === compareB) {
-      alert("No changes found.")
-      return;
+      return setDisplayPopup({title: "Error", text: "No changes found."});
     }
-
-    if (storedLoginInfo) {
-      try {
-      const response = await update(storedLoginInfo, userInfoChange)
+    if (token) {
+      const response = await update(token, userInfoChange)
       if(response.statusCode === 200) {
-        const updatedUserInfo = await getMe(storedLoginInfo)
+        const updatedUserInfo = await getMe(token)
         setUserInfo(updatedUserInfo)
-      };    
-      } catch (error) {
-        console.log(error);
+        return setDisplayPopup({title: "Success", text: "Details updated"});
+      } else {
+        return setDisplayPopup({title: "Error", text: response.error});
       }
-      }
+    }
     setEditInfo(false)
   }
 
   const handleSubmitPassword = async (e) => {
-    //changepassword
     e.preventDefault();
-    const storedLoginInfo = localStorage.getItem('loginInfo');
+    const token = getToken();
 
-    if (storedLoginInfo) {
-      try {
-      const response = await updatePassword(storedLoginInfo, userPasswordChange)
+    if (token) {
+      const response = await updatePassword(token, userPasswordChange)
       if(response.statusCode === 200) {
-        alert("Password updated")
-      };    
-      } catch (error) {
-        console.log(error);
+        return setDisplayPopup({title: "Success", text: "Password updated"});
+      } else {
+        console.log(response);
+        return setDisplayPopup({title: "Error", text: response.error});
       }
-      }
-      setEditPassword(false)
+
+    }
+    setEditPassword(false)
   }
 
   const handleEditInfo = (e) => {
@@ -77,13 +73,14 @@ export const UserInfo = ({setShowUserProfile, userInfo, setUserInfo, handleLogou
     setEditPassword(true);
   }
 
+  console.log(displayPopup);
   
 
 
   return (
-<div className="userinfo-wrapper">
-
-<div className="userinfo-frame">
+  <>
+  <div className="userinfo-wrapper">
+  <div className="userinfo-frame">
   <button className="exit-button" onClick={() => setShowUserProfile(false)}>X</button>
   <div>
     <h2>User info</h2>
@@ -101,28 +98,28 @@ export const UserInfo = ({setShowUserProfile, userInfo, setUserInfo, handleLogou
         <h3>Edit info</h3>
         <div className="form-control">
             <label htmlFor="change-input-email">E-mail:</label>
-            <input type="text" id="change-input-email" name="email" onChange={handleChangeInfo} value={userInfoChange.email}></input>
+            <input type="text" id="change-input-email" name="email" onChange={handleChangeInfo} value={userInfoChange.email} autoComplete="off"></input>
           </div>
           <div className="form-control">
             <label htmlFor="change-input-fname">First name:</label>
-            <input type="text" id="change-input-fname" name="fname" onChange={handleChangeInfo} value={userInfoChange.fname}></input>
+            <input type="text" id="change-input-fname" name="fname" onChange={handleChangeInfo} value={userInfoChange.fname} autoComplete="off"></input>
           </div>
           <div className="form-control">
             <label htmlFor="change-input-lname">Last name:</label>
-            <input type="text" id="change-input-lname" name="lname" onChange={handleChangeInfo} value={userInfoChange.lname}></input>
+            <input type="text" id="change-input-lname" name="lname" onChange={handleChangeInfo} value={userInfoChange.lname} autoComplete="off"></input>
           </div>
     <div className="userinfo-button-wrapper">
     <div className="button-control">
     <button className="application-button">Apply changes</button>
     </div>
-    <div className="button-control">
+    <div className="button-control" >
     <button className="application-button" onClick={(e) => {e.preventDefault(); setEditInfo(false)}}>Cancel</button>
     </div>
     </div>
   </form>
   }
   {editPassword &&
-  <form onSubmit={handleSubmitPassword}>
+  <form  onSubmit={handleSubmitPassword}>
         <h3>Change password</h3>
     <div className="form-control">
       <label htmlFor="change-password-old">Current Password:</label>
@@ -134,10 +131,10 @@ export const UserInfo = ({setShowUserProfile, userInfo, setUserInfo, handleLogou
     </div>
     <div className="userinfo-button-wrapper">
     <div className="button-control">
-    <button className="application-button">Apply changes</button>
+      <button className="application-button">Apply changes</button>
     </div>
-    <div className="button-control">
-    <button className="application-button" onClick={(e) => {e.preventDefault(); setEditPassword(false)}}>Cancel</button>
+    <div className="button-control" >
+      <button className="application-button" onClick={(e) => {e.preventDefault(); setEditPassword(false)}}>Cancel</button>
     </div>
     </div>
   </form>
@@ -145,22 +142,25 @@ export const UserInfo = ({setShowUserProfile, userInfo, setUserInfo, handleLogou
   <section className="userinfo-buttons-wrapper">
   {!editPassword && !editInfo &&
   <div className="userinfo-button-wrapper">
-    <div className="button-control">
+    <div className="button-control" >
       <button className="application-button" onClick={handleEditInfo}>Edit user info</button>
     </div>
-    <div className="button-control">
+    <div className="button-control" >
       <button className="application-button" onClick={handleEditPassword}>Change password</button>
     </div>
   </div>
   }
   <div className="button-wrapper">
-    <div className="button-control">
-      <button className="application-button" onClick={handleLogout}>Log out</button>
+    <div className="button-control" onClick={handleLogout}>
+      <button className="application-button" >Log out</button>
     </div>
   </div>
-</section>
-</div>
-</div>
-
+  </section>
+  </div>
+  </div>
+  {displayPopup !== "" &&
+    <Popup setDisplayPopup={setDisplayPopup} displayPopup={displayPopup}/>
+  }
+  </>
   )
 }

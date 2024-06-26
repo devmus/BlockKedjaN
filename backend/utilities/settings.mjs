@@ -4,6 +4,9 @@ dontenv.config({ path: './config/config.env' });
 
 export const INITIAL_BALANCE = 1000;
 
+export const REWARD_ADDRESS = { address: 'reward-address' };
+export const MINING_REWARD = 50;
+
 export const GENESIS_DATA = {
   timestamp: 1,
   hash: 'genesis',

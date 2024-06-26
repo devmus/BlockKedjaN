@@ -6,6 +6,7 @@ dontenv.config({ path: './config/config.env' });
 const CHANNELS = {
   DEMO: 'DEMO',
   BLOCKCHAIN: 'BLOCKCHAIN',
+  TRANSACTION: 'TRANSACTION',
 };
 
 const credentials = {
@@ -16,8 +17,10 @@ const credentials = {
 };
 
 export default class PubNubServer {
-  constructor({ blockchain }) {
+  constructor({ blockchain, transactionPool, wallet }) {
     this.blockchain = blockchain;
+    this.transactionPool = transactionPool;
+    this.wallet = wallet;
 
     this.pubnub = new PubNub(credentials);
     this.pubnub.subscribe({ channels: Object.values(CHANNELS) });
@@ -31,18 +34,35 @@ export default class PubNubServer {
     });
   }
 
+  broadcastTransaction(transaction) {
+    this.publish({
+      channel: CHANNELS.TRANSACTION,
+      message: JSON.stringify(transaction),
+    });
+  }
+
   listener() {
     return {
       message: (msgObject) => {
         const { channel, message } = msgObject;
         const msg = JSON.parse(message);
-        console.log(msg);
-        console.log(
-          `Meddelandet mottagits på kanal: ${channel}, meddelande: ${message}`
-        );
 
-        if (channel === CHANNELS.BLOCKCHAIN) {
-          this.blockchain.replace(msg);
+        switch (channel) {
+          case CHANNELS.BLOCKCHAIN:
+            this.blockchain.replaceChain(msg, () => {
+              this.transactionPool.clearBlockTransactions({ chain: msg });
+            });
+            break;
+          case CHANNELS.TRANSACTION:
+            if (
+              !this.transactionPool.transactionExist({
+                address: this.wallet.publicKey,
+              })
+            )
+              this.transactionPool.addTransaction(msg);
+            break;
+          default:
+            return;
         }
       },
     };

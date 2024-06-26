@@ -30,7 +30,7 @@ export const login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return next(new ErrorResponse('Epost eller lösenord krävs.', 400));
+    return next(new ErrorResponse('E-mail or password is missing', 400));
   }
 
   //mongoose fråga
@@ -38,11 +38,11 @@ export const login = asyncHandler(async (req, res, next) => {
 
   const user = await User.findOne({ email }).select('+password');
 
-  if (!user) return next(new ErrorResponse('Felaktik inloggning', 401));
+  if (!user) return next(new ErrorResponse('Wrong login', 401));
 
   const isCorrect = await user.validatePassword(password);
 
-  if (!isCorrect) return next(new ErrorResponse('Felaktig inloggning', 401));
+  if (!isCorrect) return next(new ErrorResponse('Wrong login', 401));
 
   createAndSendToken(user, 200, res);
 });
@@ -90,7 +90,7 @@ export const updatePassword = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user.id).select('+password');
 
   if (!(await user.validatePassword(req.body.password))) {
-    return next(new ErrorResponse('Felaktigt lösenord'));
+    return next(new ErrorResponse('Wrong password'));
   }
 
   user.password = req.body.newPassword;
@@ -106,14 +106,14 @@ export const forgotPassword = asyncHandler(async (req, res, next) => {
   const email = req.body.email;
 
   if (!email) {
-    return next(new ErrorResponse('E-post för återställning saknas', 400));
+    return next(new ErrorResponse('E-mail is missing', 400));
   }
 
   let user = await User.findOne({ email });
 
   if (!user) {
     return next(
-      new ErrorResponse(`Ingen användare med e-post ${email} kunde hittas`, 400)
+      new ErrorResponse(`No user with e-mail '${email}' could be found`, 400)
     );
   }
 
@@ -139,7 +139,7 @@ export const resetPassword = asyncHandler(async (req, res, next) => {
   const password = req.body.password;
   const token = req.params.token;
 
-  if (!password) return next(new ErrorResponse('Lösenord saknas', 400));
+  if (!password) return next(new ErrorResponse('Password missing', 400));
 
   let user = await User.findOne({ resetPasswordToken: token });
 

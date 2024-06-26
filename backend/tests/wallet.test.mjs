@@ -15,8 +15,6 @@ describe('Wallet', () => {
     });
 
     it('should have a property named public key', () => {
-      console.log(wallet.publicKey);
-
       expect(wallet).toHaveProperty('publicKey');
     });
   });

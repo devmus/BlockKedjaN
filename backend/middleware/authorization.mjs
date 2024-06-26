@@ -19,7 +19,7 @@ export const protect = asyncHandler(async (req, res, next) => {
   // }
 
   if (!token) {
-    next(new ErrorResponse('Behörighet saknas', 401));
+    next(new ErrorResponse('Permission denied', 401));
   }
 
   //Verifiera token som vi hämtat från header
@@ -27,7 +27,7 @@ export const protect = asyncHandler(async (req, res, next) => {
   req.user = await User.findById(decodedToken.id);
 
   if (!req.user) {
-    next(new ErrorResponse('Behörighet saknas', 401));
+    next(new ErrorResponse('Permission denied', 401));
   }
 
   next();
@@ -40,7 +40,7 @@ export const authorize = (...roles) => {
       return res.status(403).json({
         success: false,
         statusCode: 403,
-        message: `Rollen ${req.user.role} har inte behörighet`,
+        message: `The role ${req.user.role} doesn't have permission`,
       });
     }
     next();

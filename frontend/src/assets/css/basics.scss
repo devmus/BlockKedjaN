@@ -8,6 +8,7 @@ $hover-link: (
   color: $red-theme,
   text-shadow: 1px 1px 1px black,
   border: 3px solid $white-theme,
+  border2: 3px solid $red-theme,
   background: $lightblue-theme,
 );
 
@@ -28,12 +29,24 @@ $hover-link: (
   border: map-get($hover-link, border);
 }
 
+@mixin hover-link-mine {
+  cursor: map-get($hover-link, cursor);
+  // color: map-get($hover-link, color);
+  border: map-get($hover-link, border2);
+  background: $blue-theme;
+}
+
+$font-size-30: 3rem;
+$font-size-25: 2.5rem;
+$font-size-20: 2rem;
+$font-size-15: 1.5rem;
+$font-size-10: 1rem;
+
 html, body{
   height:100%;
   color: $white-theme;
   display: flex;
   flex-direction: column;
-
 
   #root{
     display: flex;
@@ -44,20 +57,41 @@ html, body{
     
 
     header{
-      min-height: 10vh;
+      // min-height: 10vh;
     }
 
     main{
       display: flex;
-      flex: 1;
+      min-height: 87vh;
       color: black;
       padding: 20px;
       overflow-y: auto;
     }
 
     footer{
-      min-height: 3vh;
+      // min-height: 3vh;
     }
   }
 }
 
+// <uniquifier>: Use a unique and descriptive class name
+// <weight>: Use a value from 100 to 1000
+
+.roboto-flex-box {
+  font-family: "Roboto Flex", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "slnt" 0,
+    "wdth" 100,
+    "GRAD" 0,
+    "XOPQ" 96,
+    "XTRA" 468,
+    "YOPQ" 79,
+    "YTAS" 750,
+    "YTDE" -203,
+    "YTFI" 738,
+    "YTLC" 514,
+    "YTUC" 712;
+}

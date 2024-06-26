@@ -4,9 +4,39 @@ footer{
   bottom: 0;
   width: 100%;
   background-color: $blue-theme;
-  font-size: x-large;
-  padding: 1rem;
+  font-size: $font-size-15;
+  padding: 0.5rem;
   justify-content: space-between;
+  align-items: center;
+  align-content: center;
+
+  .github-link{
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+
+
+  }
+
+  .link-wrapper{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+
+    a{
+      display: flex;
+      align-content: center;
+
+      &:hover{
+        @include hover-link;
+      }
+  
+      .active{
+        color: $red-theme;
+      }
+    }
+  }
 
   .admin-link{
 

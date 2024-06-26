@@ -7,14 +7,23 @@ import cors from 'cors';
 import authRouter from './routes/auth-routes.mjs';
 import blockchainRouter from './routes/blockchain-routes.mjs';
 import blockRouter from './routes/block-routes.mjs';
+import transactionRouter from './routes/transaction-routes.mjs';
 import PubNubServer from './pubnubServer.mjs';
 import { errorHandler } from './middleware/errorHandler.mjs';
 import Blockchain from './models/Blockchain.mjs';
+import TransactionPool from './models/TransactionPool.mjs';
+import Wallet from './models/Wallet.mjs';
 
 dontenv.config({ path: './config/config.env' });
 
 export const blockchain = new Blockchain();
-export const pubnubServer = new PubNubServer({ blockchain: blockchain }); // flytta dessa 2 till startup fil?
+export const transactionPool = new TransactionPool();
+export const wallet = new Wallet();
+export const pubnubServer = new PubNubServer({
+  blockchain,
+  transactionPool,
+  wallet: wallet,
+});
 
 connectDb();
 
@@ -35,14 +44,21 @@ app.use(morgan('dev'));
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/blockchain', blockchainRouter);
 app.use('/api/v1/block', blockRouter);
+app.use('/api/v1/wallet', transactionRouter);
 app.use(errorHandler);
 
 const synchronize = async () => {
-  const response = await fetch(`${ROOT_NODE}/api/v1/blockchain`);
+  let response = await fetch(`${ROOT_NODE}/api/v1/blockchain`);
   if (response.ok) {
     const result = await response.json();
-    console.log('SYNC', result.data);
     blockchain.replaceChain(result.data);
+  }
+
+  response = await fetch(`${ROOT_NODE}/api/v1/wallet/transactions`);
+  if (response.ok) {
+    const result = await response.json();
+    transactionPool.replaceTransactionMap(result.data);
+    console.log('Replace pool');
   }
 };
 

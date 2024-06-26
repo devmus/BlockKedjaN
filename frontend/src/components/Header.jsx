@@ -6,7 +6,6 @@ import { Login } from './Login';
 import { getMe } from '../services/auth';
 import { UserInfo } from './Userinfo';
 
-
 export const Header = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [showUserProfile, setShowUserProfile] = useState(false);
@@ -14,17 +13,16 @@ export const Header = () => {
   const [updateHeader, setUpdateHeader] = useState(false)
 
   useEffect(() => {
-  const storedLoginInfo = localStorage.getItem('loginInfo');
+    const token = localStorage.getItem('loginInfo');
+    if(token && token !== "undefined"){
     const getUserInfo = async () => {
-      if (storedLoginInfo && storedLoginInfo !== "undefined") {
-      const userInfo = await getMe(storedLoginInfo)
+      const userInfo = await getMe(token)
       setUserInfo(userInfo)
-      console.log("useeffect");
-    }
     return;
   }
 
   getUserInfo();
+}
   }, [updateHeader])
 
   const handleClickLogin = () => {
@@ -32,7 +30,10 @@ export const Header = () => {
   }
 
   const handleClickProfile = () => {
-    setShowUserProfile(true)
+    const token = localStorage.getItem('loginInfo');
+    if(token && token !== "undefined"){
+      setShowUserProfile(true)
+    }
   }
 
   const handleLogout = () => {
@@ -41,14 +42,16 @@ export const Header = () => {
     setShowUserProfile(false)
   }
 
-  console.log("header", updateHeader);
-
   return (
     <header>
       <section className="first-row-wrapper">
-        <div className="logo-wrapper"><Link to="/blockkedjan/home"><h1>BlockKedjaN</h1></Link></div>
+        <div className="logo-wrapper"><Link to="/blockkedjan/home"><h1>Flowchain</h1></Link></div>
         <div className="user-wrapper">
-          <div>RPC</div>
+          <div>
+            <select>
+
+            </select>
+          </div>
           {!userInfo ? (
           <button onClick={handleClickLogin}>Log in / Sign up</button>
           ) : (

@@ -12,4 +12,12 @@ describe('Hashing', () => {
       createHash('solana', 'bitcoin')
     );
   });
+
+  it('should create a unique hash when any property has changed', () => {
+    const obj = {};
+    const orginalHash = createHash(obj);
+    obj['name'] = 'CORRUPT';
+
+    expect(createHash(obj)).not.toEqual(orginalHash);
+  });
 });

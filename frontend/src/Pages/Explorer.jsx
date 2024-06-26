@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { listBlocks } from '../services/blockchain';
-import { IconArrowBigUp, IconArrowUp, IconCirclesRelation, IconDna, IconLink, IconTopologyStarRing3 } from '@tabler/icons-react';
+import { IconDna, IconTopologyStarRing3 } from '@tabler/icons-react';
 
 export const Explorer = () => {
 
@@ -21,7 +21,7 @@ export const Explorer = () => {
       if(chain){
         const block = chain.data.map((block, index) => (
           <section key={block.hash}>
-        <div className="block">
+        <div className="block pulsating-box">
           <div>Time: {formatTimestamp(block.timestamp)}</div>
           <div>Hash: {block.hash}</div>
           <div>lastHash: {block.lastHash}</div>
@@ -53,7 +53,7 @@ export const Explorer = () => {
 
   return (
     <main className="explorer-wrapper">
-      <h2>Full view of all the blocks on the chain.</h2>
+      <h2>Blockchain overview</h2>
       <section className="show-blocks">
         {blockchain && <>{showBlock}</>}
       </section>

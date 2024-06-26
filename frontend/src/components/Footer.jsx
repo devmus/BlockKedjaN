@@ -1,15 +1,21 @@
+import { IconBrandGithub, IconBrandLinkedin } from '@tabler/icons-react'
 import { Link, NavLink } from 'react-router-dom'
 
 export const Footer = () => {
   return (
     <footer>
+
       <div>
-      Copyright devmus 2024
+        &copy; devmus 2024
       </div>
-      <div className="admin-link">
-        <NavLink to="/blockkedjan/admin" className={({isActive}) => isActive ? "active" : ""}>
-          Admin Panel
-        </NavLink>
+
+      <div className="link-wrapper">
+      <a href="https://github.com/devmus">
+      <IconBrandLinkedin/>
+      </a>
+      <a href="https://www.linkedin.com/in/rasmus-wersall/">
+      <IconBrandGithub/>
+      </a>
       </div>
     </footer>
     

@@ -1,21 +1,21 @@
 .explorer-wrapper{
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   align-items: center;
 
   h2{
+    margin-top: 40px;
     text-align: center;
-    font-size: x-large;
-    margin: 15px;
+    font-size: $font-size-20;
   }
 
 
   .show-blocks {
-    width: 90%;
+    width: 80%;
     display: flex;
     flex-direction: column-reverse;
     margin-bottom: 50px;
+    margin-top: 20px;
   }
 
 
@@ -34,6 +34,8 @@
     background-color: $lightblue-theme;
     word-wrap: break-word;
 
+
+
     div{
       margin: 3px;
       color: $white-theme;
@@ -42,4 +44,24 @@
       flex-wrap:nowrap;
     }
   }
+
+  .pulsating-box {
+
+    &:hover{
+    border-radius: 10px;
+    animation: pulse-shadow 2s infinite;
+    }
+}
+
+@keyframes pulse-shadow {
+  0% {
+      box-shadow: 0 0 10px 0 rgba(224, 108, 67, 0.5);
+  }
+  50% {
+      box-shadow: 0 0 20px 15px rgba(224, 108, 67, 0.3);
+  }
+  100% {
+      box-shadow: 0 0 10px 0 rgba(224, 108, 67, 0.5);
+  }
+}
 }

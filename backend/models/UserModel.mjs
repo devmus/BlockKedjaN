@@ -6,19 +6,19 @@ import jwt from 'jsonwebtoken';
 const userSchema = new mongoose.Schema({
   fname: {
     type: String,
-    required: [true, 'Förnamn måste anges'],
+    required: [true, 'First name is required'],
   },
   lname: {
     type: String,
-    required: [true, 'Efternamn måste anges'],
+    required: [true, 'Last name is required'],
   },
   email: {
     type: String,
-    required: [true, 'E-post måste anges'],
+    required: [true, 'E-mail is required'],
     unique: true,
     match: [
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      'Ange en korrekt e-post adress',
+      'Input a valid e-mail address.',
     ],
   },
   role: {

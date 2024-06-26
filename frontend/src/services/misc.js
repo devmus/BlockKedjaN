@@ -15,3 +15,14 @@ export const copyToClipboard = (text) => {
       console.error('Failed to copy: ', err);
     });
 };
+
+export const formatTimestamp = (timestamp) => {
+  const date = new Date(timestamp);
+  return date.toLocaleString('sv-SE');
+};
+
+export const getToken = () => {
+  const storedLoginInfo = localStorage.getItem('loginInfo');
+
+  return storedLoginInfo;
+};

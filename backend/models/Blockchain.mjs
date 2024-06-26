@@ -4,8 +4,6 @@ import Block from './Block.mjs';
 export default class Blockchain {
   constructor() {
     this.chain = [Block.createGenesis()];
-
-    this.memberNodes = [];
   }
 
   createBlock({ data }) {
@@ -14,10 +12,12 @@ export default class Blockchain {
     return block;
   }
 
-  replaceChain(chain) {
+  replaceChain(chain, onSuccess) {
     if (chain.length <= this.chain.length) return;
 
     if (!Blockchain.isValid(chain)) return;
+
+    if (onSuccess) onSuccess();
 
     this.chain = chain;
   }
