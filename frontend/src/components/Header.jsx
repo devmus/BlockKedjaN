@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { IconUserCircle } from '@tabler/icons-react'
+import { IconCurrencyFlorin, IconUserCircle } from '@tabler/icons-react'
 import { Navbar } from './Navbar'
 import { Link } from 'react-router-dom'
 import { Login } from './Login';
@@ -11,6 +11,7 @@ export const Header = () => {
   const [showUserProfile, setShowUserProfile] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const [updateHeader, setUpdateHeader] = useState(false)
+  const text = "Flowchain";
 
   useEffect(() => {
     const token = localStorage.getItem('loginInfo');
@@ -45,7 +46,16 @@ export const Header = () => {
   return (
     <header>
       <section className="first-row-wrapper">
-        <div className="logo-wrapper"><Link to="/blockkedjan/home"><h1>Flowchain</h1></Link></div>
+        <div className="logo-wrapper">
+          <Link to="/blockkedjan/home">
+          <h1 className="pulsating-heading">
+          {text.split('').map((letter, index) => (
+            <span key={index}>{letter}</span>
+          ))}  
+          </h1></Link>
+          <div className="logo"><IconCurrencyFlorin/></div>
+          
+        </div>
         <div className="user-wrapper">
           <div>
             <select>

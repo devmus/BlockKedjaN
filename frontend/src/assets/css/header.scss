@@ -13,16 +13,22 @@ header{
 
     .logo-wrapper{
       font-size: $font-size-30;
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
 
-      h1{
-        cursor: pointer;
+      .logo{
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-        &:hover{
-          @include hover-link-h1;
-        }
-
-        &:active{
-          cursor:default;
+        .tabler-icon-currency-florin{
+          width: 40px;
+          height: 40px;
+          border: 3px solid $blue-theme;
+          background-color: $red-theme;
+          border-radius: 100px;
         }
       }
     }
@@ -96,4 +102,85 @@ header{
       color: $red-theme;
     }
   }
+}
+
+.pulsating-heading {
+  cursor: pointer;
+
+  &:hover {
+    animation: pulse-text-shadow 3s infinite;
+  }
+
+  &:active{
+    cursor:default;
+  }
+}
+
+@keyframes pulse-text-shadow {
+  0% {
+    text-shadow: 0 0 15px rgba(224, 108, 67, 1);
+  }
+  50% {
+    text-shadow: 0 0 30px rgba(224, 108, 67, 0.5);
+  }
+  100% {
+    text-shadow: 0 0 15px rgba(224, 108, 67, 0.3);
+  }
+}
+
+.pulsating-heading:hover span {
+  animation: colorChange 1s forwards;
+}
+
+@keyframes colorChange {
+  0% {
+    color: $white-theme
+  }
+  50% {
+    color: rgba(224, 108, 67, 1);
+  }
+  100% {
+    color: white-theme
+  }
+}
+
+.pulsating-heading span {
+  display: inline-block;
+  animation: none;
+}
+
+.pulsating-heading:hover span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.pulsating-heading:hover span:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.pulsating-heading:hover span:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.pulsating-heading:hover span:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+.pulsating-heading:hover span:nth-child(5) {
+  animation-delay: 0.4s;
+}
+
+.pulsating-heading:hover span:nth-child(6) {
+  animation-delay: 0.5s;
+}
+
+.pulsating-heading:hover span:nth-child(7) {
+  animation-delay: 0.6s;
+}
+
+.pulsating-heading:hover span:nth-child(8) {
+  animation-delay: 0.7s;
+}
+
+.pulsating-heading:hover span:nth-child(9) {
+  animation-delay: 0.8s;
 }

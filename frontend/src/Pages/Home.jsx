@@ -135,6 +135,13 @@ export const Home = () => {
             <li><IconCheckbox /> <span>Add design to elements that display transactions and blocks to highlight and divide information.</span></li>
           </ul>
         </div>
+        <div className="box">
+          <h3>2024-06-28</h3>
+          <ul>
+            <li><IconCheckbox /> <span>Setup backend security protection against; NoSQL injections, sniffing, cross site scripting, DDOS, HPP.</span></li>
+            <li><IconCheckbox /> <span>Add design to elements that display transactions and blocks to highlight and divide information.</span></li>
+          </ul>
+        </div>
     </div>
     </section>
     </main>

@@ -3,10 +3,14 @@ import dontenv from 'dotenv';
 import { connectDb } from './config/mongo.mjs';
 import colors from 'colors';
 import morgan from 'morgan';
+import mongoSanitize from 'express-mongo-sanitize';
+import helmet from 'helmet';
+import xss from 'xss-clean';
+import rateLimit from 'express-rate-limit';
+import hpp from 'hpp';
 import cors from 'cors';
 import authRouter from './routes/auth-routes.mjs';
 import blockchainRouter from './routes/blockchain-routes.mjs';
-import blockRouter from './routes/block-routes.mjs';
 import transactionRouter from './routes/transaction-routes.mjs';
 import PubNubServer from './pubnubServer.mjs';
 import { errorHandler } from './middleware/errorHandler.mjs';
@@ -31,6 +35,18 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use(mongoSanitize());
+app.use(helmet());
+app.use(xss());
+
+const limit = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  limit: 100,
+});
+
+app.use(limit);
+app.use(hpp());
+
 const DEFAULT_PORT = parseInt(process.env.PORT);
 const ROOT_NODE = `http://localhost:${DEFAULT_PORT}`;
 
@@ -43,7 +59,6 @@ setTimeout(() => {
 app.use(morgan('dev'));
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/blockchain', blockchainRouter);
-app.use('/api/v1/block', blockRouter);
 app.use('/api/v1/wallet', transactionRouter);
 app.use(errorHandler);
 

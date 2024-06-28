@@ -48,7 +48,10 @@
   }
 
   .pending-transactions {
-    width: 80%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .pending{
@@ -60,6 +63,8 @@
     margin-top: 20px;
     word-wrap: break-word;
     color: $white-theme;
+    width: 80%;
+    max-width: 1024px;
 
     h3{
       display: flex;
@@ -96,7 +101,10 @@
   }
 
   .latest-block-wrapper {
-    width: 80%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     h2{
       text-align: center;
@@ -114,6 +122,8 @@
       margin-top: 20px;
       word-wrap: break-word;
       margin-bottom: 2rem;
+      width: 80%;
+      max-width: 1024px;
 
       h3{
         display: flex;

@@ -33,9 +33,6 @@ export const login = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse('E-mail or password is missing', 400));
   }
 
-  //mongoose fråga
-  // Vi måste hämta in användaren baserat på dess e-post
-
   const user = await User.findOne({ email }).select('+password');
 
   if (!user) return next(new ErrorResponse('Wrong login', 401));
@@ -98,63 +95,3 @@ export const updatePassword = asyncHandler(async (req, res, next) => {
 
   createAndSendToken(user, 200, res);
 });
-
-// @desc    Glömt lösenord
-// @route   GET /api/v1/auth/forgotpassword
-// @access  PUBLIC
-export const forgotPassword = asyncHandler(async (req, res, next) => {
-  const email = req.body.email;
-
-  if (!email) {
-    return next(new ErrorResponse('E-mail is missing', 400));
-  }
-
-  let user = await User.findOne({ email });
-
-  if (!user) {
-    return next(
-      new ErrorResponse(`No user with e-mail '${email}' could be found`, 400)
-    );
-  }
-
-  const resetToken = user.createResetPasswordToken();
-  await user.save({ validateBeforeSave: false });
-
-  //Skapa en reset URL...
-  const resetUrl = `${req.protocol}://${req.get(
-    'host'
-  )}/api/v1/auth/resetpassword/${resetToken}`;
-
-  res.status(200).json({
-    success: true,
-    statusCode: 201,
-    data: { token: resetToken, url: resetUrl },
-  });
-});
-
-// @desc    Återställ lösenord
-// @route   PUT /api/v1/auth/resetpassword/:token
-// @access  PUBLIC
-export const resetPassword = asyncHandler(async (req, res, next) => {
-  const password = req.body.password;
-  const token = req.params.token;
-
-  if (!password) return next(new ErrorResponse('Password missing', 400));
-
-  let user = await User.findOne({ resetPasswordToken: token });
-
-  user.password = password;
-
-  user.resetPasswordToken = undefined;
-  user.resetPasswordTokenExpire = undefined;
-
-  await user.save();
-
-  createAndSendToken(user, 200, res);
-});
-
-const createAndSendToken = (user, statusCode, res) => {
-  const token = user.generateToken();
-
-  res.status(statusCode).json({ success: true, statusCode, token });
-};

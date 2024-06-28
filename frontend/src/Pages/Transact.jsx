@@ -41,7 +41,7 @@ export const Transact = () => {
 
     const token = getToken();
     if (!token || token === "undefined") {
-      return setDisplayPopup({title: "Error", text: 'You need to be logged in proceed.'});
+      return setDisplayPopup({title: "Error", text: 'You need to be logged in to proceed.'});
     }
 
     if(tx.recipient === (undefined || "") || tx.amount === (undefined || "")) {

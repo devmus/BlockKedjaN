@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { createBlock } from '../services/blockchain'
 import { listTransactions, mine } from '../services/wallet'
 import { formatTimestamp, getToken, shortenKey } from '../services/misc';
 import { IconBox, IconPick, IconRotateDot, IconSquareChevronsRight } from '@tabler/icons-react';
@@ -34,7 +33,7 @@ export const Mine = () => {
 
     const token = getToken();
     if (!token || token === "undefined") {
-      return setDisplayPopup({title: "Error", text: 'You need to be logged in proceed.'});
+      return setDisplayPopup({title: "Error", text: 'You need to be logged in to proceed.'});
     }
 
     try {
