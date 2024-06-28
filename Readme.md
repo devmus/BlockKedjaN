@@ -1,3 +1,5 @@
+test
+
 # Setup
 
 - Skapa backend/config/config.env och lägg in info.
