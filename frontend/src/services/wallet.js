@@ -43,3 +43,14 @@ export const mine = async (token) => {
     return error.response.data;
   }
 };
+
+export const calculateBalance = async () => {
+  try {
+    const response = await axios.get(
+      'http://localhost:5001/api/v1/wallet/info'
+    );
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};

@@ -116,15 +116,23 @@ export const Home = () => {
           <h3>2024-06-25</h3>
           <ul>
             <li><IconCheckbox /> <span>Create a frontend popup component to display errors and more.</span></li>
+            <li><IconCheckbox /> <span>Improve error handling for the frontend.</span></li>
             <li><IconCheckbox /> <span>Align HTML elements and their design properties to get a coherent browsing experience of the site.</span></li>
           </ul>
         </div>
         <div className="box">
           <h3>2024-06-26</h3>
           <ul>
-            <li><IconCheckbox /> <span>Create a frontend popup component to display errors and more.</span></li>
-            <li><IconCheckbox /> <span>Improve error handling for the frontend.</span></li>
-            <li><IconCheckbox /> <span>Align HTML elements and their design properties to get a coherent browsing experience of the site.</span></li>
+            <li><IconCheckbox /> <span>Create a function to read the balance of a wallet address.</span></li>
+            <li><IconCheckbox /> <span>Create a function to validate and verify transactions and balances. (TDD)</span></li>
+            <li><IconCheckbox /> <span>Create an API endpoint to list the wallet balances.</span></li>
+          </ul>
+        </div>
+        <div className="box">
+          <h3>2024-06-27</h3>
+          <ul>
+            <li><IconCheckbox /> <span>Update all elements that display information from transactions and blocks to include updated functions.</span></li>
+            <li><IconCheckbox /> <span>Add design to elements that display transactions and blocks to highlight and divide information.</span></li>
           </ul>
         </div>
     </div>

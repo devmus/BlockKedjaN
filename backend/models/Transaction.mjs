@@ -11,23 +11,6 @@ export default class Transaction {
       input || this.createInputMap({ sender, outputMap: this.outputMap });
   }
 
-  createOutputMap({ sender, recipient, amount }) {
-    const outputMap = {};
-    outputMap[recipient] = amount;
-    outputMap[sender.publicKey] = sender.balance - amount;
-
-    return outputMap;
-  }
-
-  createInputMap({ sender, outputMap }) {
-    return {
-      timestamp: Date.now(),
-      amount: sender.balance,
-      address: sender.publicKey,
-      signature: sender.sign(outputMap),
-    };
-  }
-
   static transactionReward({ miner }) {
     return new this({
       input: REWARD_ADDRESS,
@@ -57,7 +40,26 @@ export default class Transaction {
     return true;
   }
 
+  createOutputMap({ sender, recipient, amount }) {
+    const outputMap = {};
+    outputMap[recipient] = amount;
+    outputMap[sender.publicKey] = sender.balance - amount;
+
+    return outputMap;
+  }
+
+  createInputMap({ sender, outputMap }) {
+    return {
+      timestamp: Date.now(),
+      amount: sender.balance,
+      address: sender.publicKey,
+      signature: sender.sign(outputMap),
+    };
+  }
+
   update({ sender, recipient, amount }) {
+    console.log('AMOUNT UPDATE', amount);
+
     if (amount > this.outputMap[sender.publicKey])
       throw new Error('Not enough funds!');
 

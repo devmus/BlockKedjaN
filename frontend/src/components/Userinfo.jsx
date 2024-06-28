@@ -73,10 +73,6 @@ export const UserInfo = ({setShowUserProfile, userInfo, setUserInfo, handleLogou
     setEditPassword(true);
   }
 
-  console.log(displayPopup);
-  
-
-
   return (
   <>
   <div className="userinfo-wrapper">
@@ -89,7 +85,7 @@ export const UserInfo = ({setShowUserProfile, userInfo, setUserInfo, handleLogou
       <div>E-mail: {userInfo.email}</div>
       <div>First Name: {userInfo.fname}</div>
       <div>Last Name: {userInfo.lname}</div>
-      <div className="publickey-display" onClick={() => copyToClipboard(userInfo.publicKey)}> Public Key: {shortenKey(userInfo.publicKey)}</div>
+      {/* <div className="publickey-display" onClick={() => copyToClipboard(userInfo.publicKey)}> Public Key: {shortenKey(userInfo.publicKey)}</div> */}
     </div>
     }
   </div>

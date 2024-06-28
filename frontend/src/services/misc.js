@@ -1,8 +1,14 @@
 export const shortenKey = (address) => {
-  const firstPart = address.slice(0, 5);
-  const lastPart = address.slice(-5);
-  const shortenedAddress = firstPart + '...' + lastPart;
-  return shortenedAddress;
+  if (address === 'MINING_REWARD') {
+    return 'Mining reward';
+  } else if (address.length > 10) {
+    const firstPart = address.slice(0, 5);
+    const lastPart = address.slice(-5);
+    const shortenedAddress = firstPart + '...' + lastPart;
+    return shortenedAddress;
+  } else {
+    return address;
+  }
 };
 
 export const copyToClipboard = (text) => {

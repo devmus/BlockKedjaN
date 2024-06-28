@@ -1,7 +1,10 @@
-import { describe, it, beforeEach, expect } from 'vitest';
+import { describe, it, beforeEach, expect, vi } from 'vitest';
 import Blockchain from '../models/Blockchain.mjs';
 import Block from '../models/Block.mjs';
 import { createHash } from '../utilities/crypto-lib.mjs';
+import Wallet from '../models/Wallet.mjs';
+import Transaction from '../models/Transaction.mjs';
+import { blockchain } from '../server.mjs';
 
 describe('Blockchain', () => {
   let blockchain_1, blockchain_2, originalChain;
@@ -135,6 +138,85 @@ describe('Blockchain', () => {
             blockchain_1.replaceChain(blockchain_2.chain);
             expect(blockchain_1.chain).toBe(blockchain_2.chain);
           });
+        });
+      });
+
+      describe('and the shouldValidate flag is true', () => {
+        it('should call validateTransactionData()', () => {
+          const validateTransactionDataMockFn = vi.fn();
+
+          blockchain_1.validateTransactionData = validateTransactionDataMockFn;
+
+          blockchain_2.createBlock({ data: 'TEST' });
+          blockchain_1.replaceChain(blockchain_2.chain, true);
+
+          expect(validateTransactionDataMockFn).toHaveBeenCalled();
+        });
+      });
+    });
+
+    describe('Validate Transaction data', () => {
+      let transaction, transactionReward, wallet;
+
+      beforeEach(() => {
+        wallet = new Wallet();
+
+        transaction = wallet.createTransaction({
+          recipient: 'Saylor',
+          amount: 35,
+        });
+        transactionReward = Transaction.transactionReward({ miner: wallet });
+      });
+
+      describe('and the transaction data is valid', () => {
+        it('should return true', () => {
+          blockchain_2.createBlock({ data: [transaction, transactionReward] });
+
+          expect(
+            blockchain_1.validateTransactionData({ chain: blockchain_2.chain })
+          ).toBe(true);
+        });
+      });
+
+      describe('and there are multiple rewards', () => {
+        it('should return false', () => {
+          blockchain_2.createBlock({
+            data: [transaction, transactionReward, transactionReward],
+          });
+
+          expect(
+            blockchain_1.validateTransactionData({ chain: blockchain_2.chain })
+          ).toBe(false);
+        });
+      });
+
+      describe('and the transaction data consists of at least one incorrectly formatted output', () => {
+        it('should return false', () => {
+          transaction.outputMap[wallet.publicKey] = 999999;
+
+          blockchain_2.createBlock({ data: [transaction, transactionReward] });
+
+          expect(
+            blockchain_1.validateTransactionData({ chain: blockchain_2.chain })
+          ).toBe(false);
+        });
+      });
+
+      describe('and the block contains identical transactions', () => {
+        it('should return false', () => {
+          blockchain_2.createBlock({
+            data: [
+              transaction,
+              transaction,
+              transaction,
+              transaction,
+              transactionReward,
+            ],
+          });
+
+          expect(
+            blockchain_1.validateTransactionData({ chain: blockchain_2.chain })
+          ).toBe(false);
         });
       });
     });

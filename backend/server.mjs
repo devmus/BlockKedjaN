@@ -58,7 +58,6 @@ const synchronize = async () => {
   if (response.ok) {
     const result = await response.json();
     transactionPool.replaceTransactionMap(result.data);
-    console.log('Replace pool');
   }
 };
 
@@ -67,8 +66,6 @@ if (process.env.GENERATE_NODE_PORT === 'true') {
 }
 
 const PORT = NODE_PORT || DEFAULT_PORT;
-
-console.log(PORT);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`.green.underline);

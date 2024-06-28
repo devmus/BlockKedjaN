@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
-import { sendTransaction } from '../services/wallet';
+import React, { useEffect, useState } from 'react'
+import { calculateBalance, sendTransaction } from '../services/wallet';
 import { getMe } from '../services/auth';
 import { formatTimestamp, getToken, shortenKey } from '../services/misc';
 import { Popup } from '../components/Popup';
+import { IconCopyPlus, IconSquareChevronRight, IconSquarePlus } from '@tabler/icons-react';
 
 export const Transact = () => {
 
@@ -10,6 +11,25 @@ export const Transact = () => {
   const [txInput, setTxInput] = useState("");
   const [txReceipt, setTxReceipt] = useState("");
   const [displayPopup, setDisplayPopup] = useState("")
+  const [senderAddress, setSenderAddress] = useState("")
+  const [senderBalance, setSenderBalance] = useState("")
+
+
+  useEffect(() => {
+
+    const getInfo = async () => {
+      try {
+        const response = await calculateBalance();
+        if(response.statusCode === 200) {
+          setSenderAddress(response.data.address)
+          setSenderBalance(response.data.balance)
+        }
+      } catch (error) {
+        return setDisplayPopup({title: "Error", text: "Server error"});
+      }
+    }
+    getInfo();
+  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -43,23 +63,27 @@ export const Transact = () => {
     if(txReceipt) {
       const senderAddress = txReceipt.inputMap.address;
       const senderBalance = data[senderAddress];
-      console.log(senderBalance);
     return (
     <>
       <div>Recipient: {txInput.recipient}</div>
-      <div>Amount recieved: {txInput.amount}</div>
+      <div>Amount to be recieved: {txInput.amount}</div>
       <div>Sender: {shortenKey(txReceipt.inputMap.address)}</div>
-      <div>Sender balance: {senderBalance}</div>
+      <div>Sender remaining balance: {senderBalance}</div>
     </>
     )
     }
   }
 
-
   return (
     <>
     <main className="transact-wrapper">
       <h2>Transaction input</h2>
+        {senderAddress && senderBalance && 
+        <div className="sender-wrapper">
+          <div className="sender-row">Sender: {shortenKey(senderAddress)}</div>
+          <div className="sender-row">Starting balance: {senderBalance}</div>
+        </div>
+        }
       <form onSubmit={handleSubmit}>
         <div className="form-control">
           <label htmlFor="tx-recipient">Recipient: </label>
@@ -78,7 +102,9 @@ export const Transact = () => {
           <>
           <h2>Transaction receipt</h2>
           <div className="receipt">
+          <h3> <IconSquareChevronRight/> Transaction added to queue:</h3>
             <div className="receipt-multi">{formatOutputMap(txReceipt.outputMap)}</div>
+            <br/>
             <div className="receipt-single">Transaction id: {txReceipt.id}</div>
             <div className="receipt-single">Time and date: {formatTimestamp(txReceipt.inputMap.timestamp)}</div>
           </div>

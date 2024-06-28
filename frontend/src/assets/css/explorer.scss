@@ -33,24 +33,46 @@
     border-radius: 15px;
     background-color: $lightblue-theme;
     word-wrap: break-word;
+    color: $white-theme;
 
+    h3{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: $font-size-15;
+      padding: 5px;
+      text-decoration: underline;
+      text-underline-offset: 5px;
+      text-decoration-color: $red-theme;
+      margin: 8px 8px;
+    }
 
-
-    div{
-      margin: 3px;
-      color: $white-theme;
+    .blockchain-single{
       font-size: large;
       display: flex;
       flex-wrap:nowrap;
+      flex-direction: column;
+      padding: 5px;
+    }
+
+    .blockchain-multi{
+      font-size: large;
+      display: flex;
+      flex-wrap:nowrap;
+      flex-direction: column;
+
+      .blockchain-value{
+        padding: 5px;
+      }
     }
   }
 
   .pulsating-box {
 
-    &:hover{
-    border-radius: 10px;
-    animation: pulse-shadow 2s infinite;
-    }
+  &:hover{
+  border-radius: 10px;
+  animation: pulse-shadow 2s infinite;
+  }
 }
 
 @keyframes pulse-shadow {

@@ -9,10 +9,32 @@ h2{
   text-align: center;
 }
 
+.sender-wrapper{
+  overflow: auto;
+  padding: 5px;
+  border: 3px solid $blue-theme;
+  border-radius: 10px;
+  background-color: $lightblue-theme;
+  word-wrap: break-word;
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
+  margin-top: 20px;
+  
+  .sender-row{
+    color: $white-theme;
+    font-size: large;
+    display: flex;
+    flex-wrap:nowrap;
+    flex-direction: column;
+    padding: 5px;
+  }
+}
+
   form{
     display: flex;
     flex-direction: column;
-    margin: 20px 0 80px 0;
+    margin: 5px 0 20px 0;
     background-color: $lightblue-theme;
     width: 80%;
     padding: 10px;
@@ -22,6 +44,8 @@ h2{
     border-radius: 10px;
     align-items: center;
 
+    
+
     .form-control{
       width: 100%;
       display: flex;
@@ -30,10 +54,7 @@ h2{
       &:first-child{
         margin-top: 32px;
       }
-
-
     }
-
 
     label{
       color: $white-theme;
@@ -42,7 +63,6 @@ h2{
       margin-right: 15px;
       width: 20%;
       text-align: end;
-
     }
 
     input{
@@ -90,14 +110,27 @@ h2{
   }
 
   .receipt{
+    color: $white-theme;
     overflow: auto;
     padding: 5px;
     border: 3px solid $blue-theme;
     border-radius: 15px;
     background-color: $lightblue-theme;
-    margin: 10px;
+    margin-top: 20px;
     word-wrap: break-word;
     margin-bottom: 2rem;
+
+    h3{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: $font-size-15;
+      padding: 5px;
+      text-decoration: underline;
+      text-underline-offset: 5px;
+      text-decoration-color: $red-theme;
+      margin: 8px 8px;
+    }
   
     .receipt-multi{
       color: $white-theme;

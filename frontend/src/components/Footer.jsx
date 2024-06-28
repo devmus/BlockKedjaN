@@ -1,5 +1,4 @@
 import { IconBrandGithub, IconBrandLinkedin } from '@tabler/icons-react'
-import { Link, NavLink } from 'react-router-dom'
 
 export const Footer = () => {
   return (

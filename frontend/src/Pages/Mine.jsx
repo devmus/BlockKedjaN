@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { createBlock } from '../services/blockchain'
 import { listTransactions, mine } from '../services/wallet'
 import { formatTimestamp, getToken, shortenKey } from '../services/misc';
-import { IconPick } from '@tabler/icons-react';
+import { IconBox, IconPick, IconRotateDot, IconSquareChevronsRight } from '@tabler/icons-react';
 import { Popup } from '../components/Popup';
 
 export const Mine = () => {
@@ -10,6 +10,7 @@ export const Mine = () => {
   const [newBlock, setNewBlock] = useState(null)
   const [pendingTx, setpendingTx] = useState(null)
   const [displayPopup, setDisplayPopup] = useState("")
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const showTransactions = async () => {
@@ -27,7 +28,7 @@ export const Mine = () => {
   }
 
     showTransactions()
-  }, [])
+  }, [newBlock])
 
   const handleClick = async () => {
 
@@ -37,17 +38,17 @@ export const Mine = () => {
     }
 
     try {
+      setLoading(true)
       const response = await mine(token)
-      console.log(response);
 
       if(response.statusCode === 200){
-        // setNewBlock(response.data)
-        console.log(response.data);
+        setTimeout(() => {
+          setLoading(false)
+          setNewBlock(response.data)
+        }, 3000);
         
       } else {
-        alert(`${response.error}`)
-        console.log(response.error);
-        return;
+        return setDisplayPopup({title: "Error", text: response.error});
       }
 
     } catch (error) {
@@ -55,8 +56,8 @@ export const Mine = () => {
     }
   }
 
-  const formatOutputMap = (data) => {
-    if(pendingTx) { 
+  const formatPending = (data) => {
+    if(data) { 
     const senderAddress = pendingTx.inputMap.address;
     const senderValue = data[senderAddress];
     const formattedData = Object.entries(data)
@@ -65,7 +66,7 @@ export const Mine = () => {
     return (
       <>
         <div>
-          <div>Sender: {shortenKey(senderAddress)}, Balance: {senderValue}</div>
+          <div>Sender: {shortenKey(senderAddress)}, Remaining balance: {senderValue}</div>
         </div>
         {filteredData.map(([key, value], index) => (
         <div key={index}>
@@ -75,6 +76,32 @@ export const Mine = () => {
       </>
     )
     }
+  }
+
+  const formatLatest = (data) => {
+
+    return (data.map((tx, txIndex) => (
+      <React.Fragment key={txIndex}>
+        <>
+          <div className="latest-value">Transaction {txIndex + 1}:</div>
+        </>
+        <div className="latest-value">Sender: {shortenKey(tx.inputMap.address)}</div>
+        
+        <>
+          {Object.entries(tx.outputMap).map(([address, value], index) => {
+            const senderAddress = tx.inputMap.address
+            if (address !== senderAddress) { 
+              return (
+              <div className="latest-value" key={index}>
+                <div>Recipient: {shortenKey(address)}, Amount: {value}</div>
+              </div>)}}
+            )
+          }
+        </>
+        <br/>
+      </React.Fragment>
+      )
+    ));
   }
 
   return (
@@ -87,11 +114,13 @@ export const Mine = () => {
       </section>
 
       <section className="pending-transactions">
-      {pendingTx &&
+      {pendingTx && 
           <>
           <h2>Pending transactions</h2>
           <div className="pending">
-            <div className="pending-multi">{formatOutputMap(pendingTx.outputMap)}</div>
+          <h3> <IconRotateDot/> Transaction pool:</h3>
+            <div className="pending-multi">{formatPending(pendingTx.outputMap)}</div>
+            <br/>
             <div className="pending-single">Transaction id: {pendingTx.id}</div>
             <div className="pending-single">Timestamp: {formatTimestamp(pendingTx.inputMap.timestamp)}</div>
           </div>
@@ -99,18 +128,28 @@ export const Mine = () => {
       }
       </section>
 
+        {loading && 
+        <div className="loading-wrapper">
+        <div className="loading">
+          </div>
+          <h3>Mining...</h3>
+
+          </div>
+          }
+
       <section className="latest-block-wrapper">
-        {newBlock && ( 
+        {newBlock && !loading && ( 
           <>
           <h2>Mined block</h2>
           <div className="latest-block">
-            <div>Time: {formatTimestamp(newBlock.timestamp)}</div>
-            <div>Hash: {newBlock.hash}</div>
-            <div>lastHash: {newBlock.lastHash}</div>
-            <div>Amount: {newBlock.data.amount}</div>
-            <div>Recipient: {newBlock.data.recipient}</div>
-            <div>Nonce: {newBlock.nonce}</div>
-            <div>Difficulty: {newBlock.difficulty}</div>
+          <h3> <IconBox/> Block data:</h3>
+            <div className="latest-single">Hash: {newBlock.hash}</div>
+            <div className="latest-single">Difficulty: {newBlock.difficulty}</div>
+            <div className="latest-single">Nonce: {newBlock.nonce}</div>
+            <div className="latest-single">Time: {formatTimestamp(newBlock.timestamp)}</div>
+            <div className="latest-single">Last hash: {newBlock.lastHash}</div>
+            <h3> <IconSquareChevronsRight/>Transactions included in this block:</h3>
+            <div className="latest-multi">{formatLatest(newBlock.data)}</div>
           </div>
           </>
         )}

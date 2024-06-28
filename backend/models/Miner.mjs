@@ -13,8 +13,10 @@ export default class Miner {
     validTransactions.push(
       Transaction.transactionReward({ miner: this.wallet })
     );
-    this.blockchain.createBlock({ data: validTransactions });
+    const minedBlock = this.blockchain.createBlock({ data: validTransactions });
     this.pubsub.broadcast();
     this.transactionPool.clearTransactions();
+
+    return minedBlock;
   }
 }
