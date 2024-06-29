@@ -1,5 +1,6 @@
 import { IconCheckbox } from '@tabler/icons-react'
 import React from 'react'
+import { API_URL } from '../services/config'
 
 export const Home = () => {
 
@@ -10,6 +11,7 @@ export const Home = () => {
         <div className="description pulsating-box">
         Flowchain is my last project, for the first year, of the Blockchain Development course. It is a 2 year program at Medieinstituet in Stockholm. In the coding journal below I have detailed the steps taken from start to finish of this fullstack project.
         <br/><br/> To play around with this blockchain, you first need to  create an account. After that make a few transactions, mine a couple of blocks and explore the blocks of the blockchain.
+        <br/><br/>
         </div>
       </section>
       <h2>Coding journal</h2>
@@ -140,6 +142,7 @@ export const Home = () => {
           <ul>
             <li><IconCheckbox /> <span>Setup backend security protection against; NoSQL injections, sniffing, cross site scripting, DDOS, HPP.</span></li>
             <li><IconCheckbox /> <span>Add design to elements that display transactions and blocks to highlight and divide information.</span></li>
+            <li><IconCheckbox /> <span>Create documentation for API endpoints.</span></li>
           </ul>
         </div>
     </div>

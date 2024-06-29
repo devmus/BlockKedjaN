@@ -15,8 +15,24 @@ footer{
     align-items: center;
     align-content: center;
     justify-content: center;
+  }
 
+  .api-docs{
+    font-size: $font-size-10;
+    a{
+      display: flex;
 
+      span{
+
+        &:hover{
+          @include hover-link;
+        }
+
+        &:active{
+          cursor:default;
+        }
+      }
+    }
   }
 
   .link-wrapper{

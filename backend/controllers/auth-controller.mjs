@@ -95,3 +95,9 @@ export const updatePassword = asyncHandler(async (req, res, next) => {
 
   createAndSendToken(user, 200, res);
 });
+
+const createAndSendToken = (user, statusCode, res) => {
+  const token = user.generateToken();
+
+  res.status(statusCode).json({ success: true, statusCode, token });
+};

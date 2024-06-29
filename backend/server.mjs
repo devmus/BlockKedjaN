@@ -18,7 +18,14 @@ import Blockchain from './models/Blockchain.mjs';
 import TransactionPool from './models/TransactionPool.mjs';
 import Wallet from './models/Wallet.mjs';
 
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 dontenv.config({ path: './config/config.env' });
+
+const fileName = fileURLToPath(import.meta.url);
+const dirname = path.dirname(fileName);
+global.__appdir = dirname;
 
 export const blockchain = new Blockchain();
 export const transactionPool = new TransactionPool();
@@ -36,7 +43,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use(mongoSanitize());
-app.use(helmet());
+app.use(helmet({ contentSecurityPolicy: false }));
 app.use(xss());
 
 const limit = rateLimit({
@@ -46,6 +53,8 @@ const limit = rateLimit({
 
 app.use(limit);
 app.use(hpp());
+
+app.use(express.static(path.join(__appdir, 'public')));
 
 const DEFAULT_PORT = parseInt(process.env.PORT);
 const ROOT_NODE = `http://localhost:${DEFAULT_PORT}`;

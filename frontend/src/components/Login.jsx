@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { getMe, login, register } from '../services/auth';
+import { login, register } from '../services/auth';
 import { Popup } from './Popup';
 
 export const Login = ({setShowLogin, setUserInfo, setUpdateHeader, updateHeader}) => {
@@ -23,38 +23,46 @@ export const Login = ({setShowLogin, setUserInfo, setUpdateHeader, updateHeader}
     e.preventDefault();
 
     if(showSignup) {
-      const response = await register(signupInfo);
 
-      if(response.statusCode = 200) {
-        localStorage.setItem("loginInfo", response.token)
-        setUpdateHeader(prevState => !prevState)
+      try {
+        const response = await register(signupInfo);
 
-      } else {
-        return setDisplayPopup({title: "Error", text: response.error});
+        if(response.statusCode === 201) {
+          localStorage.setItem("loginInfo", response.token)
+          setUpdateHeader(prevState => !prevState)
+          setShowLogin(false)
+        } else {
+          return setDisplayPopup({title: "Error", text: response.error || "Sign-up error"});
+        }
+      } catch (error) {
+        return setDisplayPopup({title: "Error", text: "Server error"});
       }
 
     } else {
-      const response = await login(loginInfo);
 
-      if(response.statusCode === 200) {
-        localStorage.setItem("loginInfo", response.token)
-        setUpdateHeader(prevState => !prevState)
-      
-      } else {
-        return setDisplayPopup({title: "Error", text: response.error});
+      try {
+        const response = await login(loginInfo);
+
+        if(response.statusCode === 200) {
+          localStorage.setItem("loginInfo", response.token)
+          setUpdateHeader(prevState => !prevState)
+          setShowLogin(false)
+        } else {
+          return setDisplayPopup({title: "Error", text: response.error});
+        }
+      } catch (error) {
+        return setDisplayPopup({title: "Error", text: "Server error"});
       }
-    }
-
-    setShowLogin(false)
+    }    
   }
 
-  const cancelCourse = () => { 
+  const cancel = () => { 
     document.getElementById("login-form").reset();
   }
 
   const handleClickSignup = (e) => {
     e.preventDefault();
-    cancelCourse()
+    cancel()
     setShowSignup(true)
   }
 

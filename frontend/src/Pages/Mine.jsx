@@ -82,7 +82,7 @@ export const Mine = () => {
     return (data.map((tx, txIndex) => (
       <React.Fragment key={txIndex}>
         <>
-          <div className="latest-value">Transaction {txIndex + 1}:</div>
+          <div className="latest-value">Batch {txIndex === 0 ? "A" : "B"}:</div>
         </>
         <div className="latest-value">Sender: {shortenKey(tx.inputMap.address)}</div>
         
