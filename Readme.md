@@ -1,25 +1,30 @@
-test
+# Flowchain
 
-# Setup
+## Setup
 
-- Skapa backend/config/config.env och lägg in info.
-- Terminal:
-  ./backend $npm run i
-  ./backend $npm run dev
-  ./frontend $npm run i
-  ./frontend $npm run dev
+- Skapa backend/config/config.env och lägg in info:
 
-## config.env
-
+```
 PORT=5001
 MINE_RATE=100
 DIFFICULTY=1
+
+PUB_KEY=
+SUB_KEY=
+SECRET_KEY=
 
 JWT_SECRET=
 JWT_TTL=90d
 JWT_COOKIE_TTL=90
 
 MONGO_URI=
+```
+
+- Terminal:
+  ./backend $npm run i
+  ./backend $npm run dev
+  ./frontend $npm run i
+  ./frontend $npm run dev
 
 ## Tests
 

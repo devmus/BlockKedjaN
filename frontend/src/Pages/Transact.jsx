@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { calculateBalance, sendTransaction } from '../services/wallet';
-import { getMe } from '../services/auth';
 import { formatTimestamp, getToken, shortenKey } from '../services/misc';
 import { Popup } from '../components/Popup';
-import { IconCopyPlus, IconSquareChevronRight, IconSquarePlus } from '@tabler/icons-react';
+import { IconSquareChevronRight } from '@tabler/icons-react';
 
 export const Transact = () => {
 
@@ -11,13 +10,18 @@ export const Transact = () => {
   const [txInput, setTxInput] = useState("");
   const [txReceipt, setTxReceipt] = useState("");
   const [displayPopup, setDisplayPopup] = useState("")
-  const [senderAddress, setSenderAddress] = useState("")
-  const [senderBalance, setSenderBalance] = useState("")
+  const [senderAddress, setSenderAddress] = useState(null)
+  const [senderBalance, setSenderBalance] = useState(null)
 
 
   useEffect(() => {
 
     const getInfo = async () => {
+
+      const token = localStorage.getItem('loginInfo');
+
+      if(token && token !== "undefined"){
+
       try {
         const response = await calculateBalance();
         if(response.statusCode === 200) {
@@ -28,6 +32,7 @@ export const Transact = () => {
         return setDisplayPopup({title: "Error", text: "Server error"});
       }
     }
+  }
     getInfo();
   }, [])
 
@@ -78,12 +83,16 @@ export const Transact = () => {
     <>
     <main className="transact-wrapper">
       <h2>Transaction input</h2>
-        {senderAddress && senderBalance && 
-        <div className="sender-wrapper">
+      <div className="sender-wrapper">
+      {!senderAddress && !senderBalance ? (
+        <div className="sender-row">Log in and refresh to see your address and balance.</div>
+        ):(
+        <>
           <div className="sender-row">Sender: {shortenKey(senderAddress)}</div>
           <div className="sender-row">Starting balance: {senderBalance}</div>
-        </div>
+          </>)
         }
+        </div>
       <form onSubmit={handleSubmit}>
         <div className="form-control">
           <label htmlFor="tx-recipient">Recipient: </label>

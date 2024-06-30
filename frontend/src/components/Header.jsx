@@ -47,7 +47,7 @@ export const Header = () => {
     <header>
       <section className="first-row-wrapper">
         <div className="logo-wrapper">
-          <Link to="/blockkedjan/home">
+          <Link to="/flowchain/home">
           <h1 className="pulsating-heading">
           {text.split('').map((letter, index) => (
             <span key={index}>{letter}</span>

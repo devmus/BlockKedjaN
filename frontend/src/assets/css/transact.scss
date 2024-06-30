@@ -5,6 +5,7 @@ align-items: center;
 
 h2{
   margin-top: 40px;
+  margin-bottom: 20px;
   font-size: $font-size-20;
   text-align: center;
 }
@@ -19,7 +20,6 @@ h2{
   display: flex;
   justify-content: space-around;
   width: 80%;
-  margin-top: 20px;
   max-width: 1024px;
   min-height: 60px;
   

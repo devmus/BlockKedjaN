@@ -8,7 +8,7 @@ import { Transact } from "./Pages/Transact";
 
 export const router = createBrowserRouter([
   {
-    path: "/blockkedjan/",
+    path: "/flowchain/",
     element: <Layout />,
     errorElement: <NotFound />,
     children:[
@@ -17,19 +17,19 @@ export const router = createBrowserRouter([
         element: <Home />
       },
       {
-        path: "/blockkedjan/home",
+        path: "/flowchain/home",
         element: <Home />
       },
       {
-        path: "/blockkedjan/transact",
+        path: "/flowchain/transact",
         element: <Transact />
       },
       {
-        path: "/blockkedjan/mine",
+        path: "/flowchain/mine",
         element: <Mine />
       },
       {
-        path: "/blockkedjan/explorer",
+        path: "/flowchain/explorer",
         element: <Explorer />
       }]
     },
