@@ -19,12 +19,13 @@ JWT_COOKIE_TTL=90
 
 MONGO_URI=
 ```
-
 - Terminal:
-  ./backend $npm run i
-  ./backend $npm run dev
-  ./frontend $npm run i
-  ./frontend $npm run dev
+```
+./backend $npm run i
+./backend $npm run dev
+./frontend $npm run i
+./frontend $npm run dev
+```
 
 ## Tests
 
