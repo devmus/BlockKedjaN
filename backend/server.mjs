@@ -1,5 +1,5 @@
 import express from 'express';
-import dontenv from 'dotenv';
+import dotenv from 'dotenv';
 import { connectDb } from './config/mongo.mjs';
 import colors from 'colors';
 import morgan from 'morgan';
@@ -21,7 +21,7 @@ import Wallet from './models/Wallet.mjs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-dontenv.config({ path: './config/config.env' });
+dotenv.config({ path: './config/config.env' });
 
 const fileName = fileURLToPath(import.meta.url);
 const dirname = path.dirname(fileName);
